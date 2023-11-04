@@ -10,7 +10,7 @@ services:
       # FILL THESE IN WITH PRODUCTION USER/PASSWORD BEFORE CREATING DATABASE!
       - POSTGRES_PASSWORD=i_want_you_to_take_me_out_!(+)
       - POSTGRES_USER=job_search_admin
-      - POSTGRES_DB=links
+      - POSTGRES_DB=pracuj
 
   job_search_qdrant:
     # SETUP REQUIRES YOU TO CREATE A LOCAL.YAML config out of LOCAL.TEMPLATE.YAML config!!!

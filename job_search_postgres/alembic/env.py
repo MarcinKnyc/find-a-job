@@ -70,6 +70,7 @@ def run_migrations_online() -> None:
     )
     url = get_postgres_url_from_env_variables()
     connectable.url = url
+    # todo: CAREFUL! This doesn't seem to work on env variables. Might be necessary to change env.py url in production.
 
     with connectable.connect() as connection:
         context.configure(

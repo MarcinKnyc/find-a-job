@@ -7,7 +7,7 @@ setup(
     author='Marcin Knyć',
     # author_email='shudson@anl.gov',
     license='GNU GENERAL PUBLIC LICENSE',
-    packages=['src'], # todo: change
+    packages=['repositories'], # todo: change
     install_requires=[
         'alembic',
         'psycopg2-binary',
