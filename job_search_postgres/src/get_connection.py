@@ -2,7 +2,7 @@ import json
 import psycopg2
 from psycopg2._psycopg import connection
 
-def connect_to_db(config_path: str = 'db_connection_config.json') -> connection:
+def connect_to_db(config_path: str = './job_search_postgres/src/db_connection_config.json') -> connection:
     # Load database configuration from JSON file
     with open(config_path) as f:
         db_config = json.load(f)

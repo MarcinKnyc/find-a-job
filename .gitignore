@@ -4,3 +4,4 @@ job_offer_qdrant/config/local.yaml
 database/
 postgres_database/
 **__pycache__/
+**.egg-info/
