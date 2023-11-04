@@ -29,9 +29,9 @@ def fetch_then_save_to_file_links_from_pages_from_i_to_j(
 
 if __name__ == '__main__':
     fetch_then_save_to_file_links_from_pages_from_i_to_j(
-        log_txt = r"H:\Kopia z dysku D\Polsl\sem VII\inzynierka\projekt inzynierski\link_scraper\debug\logs\links_log",
-        error_txt = r"H:\Kopia z dysku D\Polsl\sem VII\inzynierka\projekt inzynierski\link_scraper\debug\logs\links_error",
-        results_json = r"H:\Kopia z dysku D\Polsl\sem VII\inzynierka\projekt inzynierski\link_scraper\debug\logs\links_sresults",
+        log_txt = r".\debug\logs\links_log",
+        error_txt = r".\debug\logs\links_error",
+        results_json = r".\debug\logs\links_sresults",
         i=2, 
         j=10
     )

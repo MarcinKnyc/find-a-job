@@ -22,7 +22,7 @@ def recreate_collection(config_filename: str) -> None:
     model_vector_size = config['model_vector_size']
     on_disk = config['on_disk']
     client = QdrantClient(
-        host,
+        host=host,
         port=port,
         api_key=api_key
         )

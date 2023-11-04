@@ -29,9 +29,6 @@ def fetch_many_job_offers(
 
     Produces errors to error_txt.
     """
-    log_txt, error_txt, _ = validate_and_timestamp_output_paths(
-        log_txt, error_txt, "debug/files/results"
-    )
     with open(log_txt, "a") as error_file:
         error_file.write(
             f"{datetime.now()}Attempting to fetch {len(job_offer_links)} job offers from Pracuj.pl \n"
@@ -64,8 +61,8 @@ if __name__ == "__main__":
         timeout_everytime_ms=100,
         timeout_error_ms=1000,
         retries_error=5,
-        log_txt=r"H:\Kopia z dysku D\Polsl\sem VII\inzynierka\projekt inzynierski\link_scraper\debug\logs\offers_log",
-        error_txt=r"H:\Kopia z dysku D\Polsl\sem VII\inzynierka\projekt inzynierski\link_scraper\debug\logs\offers_error",
+        log_txt=r".\debug\logs\offers_log",
+        error_txt=r".\debug\logs\offers_error",
     ):
         insert_offer(offer)
     print("success")

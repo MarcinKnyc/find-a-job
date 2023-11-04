@@ -39,5 +39,6 @@ class Offer(Base):
     responsibilities = Column(Text, nullable=False)
     experience_requirements = Column(Text)
     link_id = Column(Integer, ForeignKey('links.links.id'))
+    exported_to_qdrant = Column(DateTime)
 
     link = relationship("Link", back_populates="offers")
