@@ -1,0 +1,6 @@
+job_offer_qdrant/config/local.yaml
+
+*.venv*/
+database/
+postgres_database/
+**__pycache__/

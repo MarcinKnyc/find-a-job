@@ -1,0 +1,28 @@
+# IMPORTANT!
+# Changes in this file will not be reflected in qdrant if you don't uncomment a line that imports this config in docker-compose.yml.
+# This is a copy of https://github.com/qdrant/qdrant/blob/master/config/development.yaml
+# Use this file to make sure your values from config.yaml aren't being overwritten 
+# (see config order in https://qdrant.tech/documentation/guides/configuration/)
+log_level: DEBUG
+
+service:
+  host: 127.0.0.1
+  http_port: 6333
+  # Uncomment to enable gRPC:
+  #grpc_port: 6334
+  #api_key: your_secret_api_key_here
+
+
+storage:
+  performance:
+    # Number of parallel threads used for search operations. If 0 - auto selection.
+    max_search_threads: 4
+
+  optimizers:
+    # Minimum interval between forced flushes.
+    flush_interval_sec: 5
+
+    # Do not create too much segments in dev
+    default_segment_number: 2
+
+  handle_collection_load_errors: true

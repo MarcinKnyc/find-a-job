@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  job_search_postgres:
+    image: postgres
+    ports:
+      - 15432:5432
+    volumes:
+      - ./postgres_database:/var/lib/postgresql/data
+    environment:
+      # FILL THESE IN WITH PRODUCTION USER/PASSWORD BEFORE CREATING DATABASE!
+      - POSTGRES_PASSWORD=i_want_you_to_take_me_out_!@#
+      - POSTGRES_USER=job_search_admin
+      - POSTGRES_DB=links
+
+  job_search_qdrant:
+    # SETUP REQUIRES YOU TO CREATE A LOCAL.YAML config out of LOCAL.TEMPLATE.YAML config!!!
+    image: qdrant/qdrant
+    ports:
+      - 6333:6333
+    volumes:
+      - ./database:/qdrant/storage:z
+      # CONFIGS
+      - ./job_offer_qdrant/config/config.yaml:/qdrant/config/config.yaml
+      - ./job_offer_qdrant/config/local.yaml:/qdrant/config/local.yaml
+      # Uncomment when they are modified:
+      # - ./job_offer_qdrant/config/development.yaml:/qdrant/config/development.yaml
+      # - ./job_offer_qdrant/config/production.yaml:/qdrant/config/production.yaml
+      # in case of bad accuracy in search, consider m and ef_construct values in config.
+      # in case of bad speed in upserts, consider turning off indexing while bulk upserting (see qdrant documentation)
+      # changed: hnsw_index.on_disk: true; was false; service.grpc_port: null; was 6334; telemetry_disabled: true; was false; api_key.
+
+  job_search_streamlit:
+    build: ./job_search_streamlit
+    ports:
+      - "18503:18503"
+    # volumes:
+      # - "./nltk_data:/root/nltk_data"
+      # may be useful for creating sentence embeddings
+    # depends_on:
+    #   - "job_search_qdrant"
+
+  job_search_flask:
+    build: ./job_search_flask
+    ports:
+      - "15000:15000"
+    # volumes:
+    #   - "./nltk_data:/root/nltk_data"
+    # depends_on:
+    #   - "job_search_qdrant"
+
+
+  
+
