@@ -1,14 +1,13 @@
 from datetime import datetime
-from offer import Offer
+from models import Link, Offer
+from pracuj_timestamp_to_python_timestamp import cast_pracuj_str_to_datetime
 from scrape_one_page import fetch_values_json_from_one_page
 
 
 def fetch_job_offer_one_page(
-    url: str,
+    link: Link,
     error_txt: str
 ) -> Offer:
-    # todo: GET LINK POSTGRES_ID BY URL
-
     KEYS_TO_SEARCH_IN_JSON = [
         "title",
         "hiringOrganization",
@@ -33,7 +32,7 @@ def fetch_job_offer_one_page(
         "jobBenefits",
     ]
     values_fetched_json = fetch_values_json_from_one_page(
-        url=url,
+        url=link.link,
         html_tag_type_to_find="script",
         html_tag_identifiers={"type": "application/ld+json"},
         keys_to_search_in_json=KEYS_TO_SEARCH_IN_JSON,
@@ -53,24 +52,25 @@ def fetch_job_offer_one_page(
             if key_to_search_in_json not in OPTIONAL_KEYS:
                 with open(error_txt, "a") as error_file:
                     error_file.write(
-                        f"{datetime.now()} Warning fetching job offer from page {url}. Details: key {key_to_search_in_json} found in offer Json from pracuj.pl, but with no values attached to it. Interpretting that as None.\n"
+                        f"{datetime.now()} Warning fetching job offer from page {link}. Details: key {key_to_search_in_json} found in offer Json from pracuj.pl, but with no values attached to it. Interpretting that as None.\n"
                     )
             # we append None here so that we can extract it later with values_fetched_json[key_to_search_in_json][0]
             values_fetched_json[key_to_search_in_json].append(None)
     return Offer(
         title=values_fetched_json["title"][0],
-        hiringOrganization=values_fetched_json["hiringOrganization"][0],
-        datePosted=values_fetched_json["datePosted"][0],
-        validThrough=values_fetched_json["validThrough"][0],
-        addressCountry=values_fetched_json["addressCountry"][0],
-        addressRegion=values_fetched_json["addressRegion"][0],
-        addressLocality=values_fetched_json["addressLocality"][0],
-        postalCode=values_fetched_json["postalCode"][0],
-        streetAddress=values_fetched_json["streetAddress"][0],
-        employmentType=values_fetched_json["employmentType"][0],
+        hiring_organization=values_fetched_json["hiringOrganization"][0],
+        date_posted=cast_pracuj_str_to_datetime(values_fetched_json["datePosted"][0]),
+        valid_through=cast_pracuj_str_to_datetime(values_fetched_json["validThrough"][0]),
+        address_country=values_fetched_json["addressCountry"][0],
+        address_region=values_fetched_json["addressRegion"][0],
+        address_locality=values_fetched_json["addressLocality"][0],
+        postal_code=values_fetched_json["postalCode"][0],
+        street_address=values_fetched_json["streetAddress"][0],
+        employment_type=values_fetched_json["employmentType"][0],
         industry=values_fetched_json["industry"][0],
-        baseSalary=values_fetched_json["baseSalary"][0],
-        jobBenefits=values_fetched_json["jobBenefits"][0],
+        base_salary=values_fetched_json["baseSalary"][0],
+        job_benefits=values_fetched_json["jobBenefits"][0],
         responsibilities=values_fetched_json["responsibilities"][0],
-        experienceRequirements=values_fetched_json["experienceRequirements"][0],
+        experience_requirements=values_fetched_json["experienceRequirements"][0],
+        link=link
     )

@@ -5,3 +5,8 @@ database/
 postgres_database/
 **__pycache__/
 **.egg-info/
+**debug/
+**iter1/
+**iter2/
+**iter3/
+**iter4/

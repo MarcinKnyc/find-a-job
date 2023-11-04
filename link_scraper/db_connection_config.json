@@ -1,7 +1,0 @@
-{
-    "user": "job_search_admin",
-    "password": "i_want_you_to_take_me_out_!@#",
-    "host": "localhost",
-    "port": "15432",
-    "dbname": "links"
-}
