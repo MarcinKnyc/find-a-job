@@ -63,8 +63,9 @@ def fetch_values_json_from_one_page(
         raise Exception(
             "Extracted data is not of valid JSON format. Maybe html tag identifiers were updated?"
         )
-    print(fetched_json)
-    print('--------------------')
+    # uncomment for debug:
+    # print(fetched_json)
+    # print('--------------------')
 
     json_values = {}
     for key_to_search_in_json in keys_to_search_in_json:

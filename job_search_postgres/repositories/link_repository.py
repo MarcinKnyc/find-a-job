@@ -1,4 +1,5 @@
-from models import Link
+from models import Link, Offer
+from sqlalchemy import exists
 from sqlalchemy.orm.session import Session
 from typing import List
 from psycopg2.errors import UniqueViolation
@@ -7,6 +8,14 @@ from datetime import datetime
 
 def fetch_all_links(session: Session) -> list[Link]:
     return session.query(Link).all()
+
+def fetch_all_links_without_offers(session: Session) -> list[Link]:
+    return (
+        session
+        .query(Link)
+        .filter(~exists().where(Offer.link_id == Link.id))
+        .all()
+    )
 
 
 def insert_link(link: Link, session: Session) -> None:

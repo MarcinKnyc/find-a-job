@@ -38,7 +38,7 @@ def fetch_links_from_pages_from_i_to_j(
     if page_i >= page_j:
         raise Exception("page_i must be less than page_j")
 
-    for page_num in range(page_i, page_j):
+    for page_num in range(page_i, page_j + 1):
         for retries in range(retries_error):
             try:
                 # links and scripts found manually. May be subject to change by original website.

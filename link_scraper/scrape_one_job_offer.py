@@ -1,5 +1,6 @@
 from datetime import datetime
 from models import Link, Offer
+from pracuj_base_salary_json_to_nullable_string import pracuj_base_salary_json_to_str
 from pracuj_timestamp_to_python_timestamp import cast_pracuj_str_to_datetime
 from scrape_one_page import fetch_values_json_from_one_page
 
@@ -15,7 +16,7 @@ def fetch_job_offer_one_page(
         "validThrough",
         "addressCountry",
         "addressRegion",
-        "addressLocality",
+        "addressLocality", # null 8/250 times. Key doesn't exist in these 8 cases.
         "postalCode",  # null 32/47 times; does the key exist then?
         "streetAddress",  # null 32/47 times; does the key exist then?
         "employmentType",
@@ -30,6 +31,8 @@ def fetch_job_offer_one_page(
         "streetAddress",
         "baseSalary",
         "jobBenefits",
+        "addressLocality",
+        "experienceRequirements",
     ]
     values_fetched_json = fetch_values_json_from_one_page(
         url=link.link,
@@ -56,6 +59,8 @@ def fetch_job_offer_one_page(
                     )
             # we append None here so that we can extract it later with values_fetched_json[key_to_search_in_json][0]
             values_fetched_json[key_to_search_in_json].append(None)
+
+    base_salary=pracuj_base_salary_json_to_str(values_fetched_json["baseSalary"][0])
     return Offer(
         title=values_fetched_json["title"][0],
         hiring_organization=values_fetched_json["hiringOrganization"][0],
@@ -67,8 +72,11 @@ def fetch_job_offer_one_page(
         postal_code=values_fetched_json["postalCode"][0],
         street_address=values_fetched_json["streetAddress"][0],
         employment_type=values_fetched_json["employmentType"][0],
-        industry=values_fetched_json["industry"][0],
-        base_salary=values_fetched_json["baseSalary"][0],
+        industry=values_fetched_json["industry"][0],        
+        base_salary_min=base_salary.min_value if base_salary is not None else None,
+        base_salary_max=base_salary.max_value if base_salary is not None else None,
+        base_salary_currency=base_salary.currency if base_salary is not None else None,
+        base_salary_unit=base_salary.unit if base_salary is not None else None,
         job_benefits=values_fetched_json["jobBenefits"][0],
         responsibilities=values_fetched_json["responsibilities"][0],
         experience_requirements=values_fetched_json["experienceRequirements"][0],

@@ -44,6 +44,7 @@ def fetch_many_job_offers(
                 yield offer
 
                 time.sleep(timeout_everytime_ms / 1000)
+                break
             except Exception as e:
                 with open(error_txt, "a") as error_file:
                     error_file.write(

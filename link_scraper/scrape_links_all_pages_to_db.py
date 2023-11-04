@@ -1,14 +1,15 @@
 
 
+from get_session import get_db_session
+from repositories.link_repository import insert_list_of_links
 from tqdm import tqdm
-from get_connection import connect_to_db
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
-from insert_links import insert_list_of_links
 from scrape_links_all_pages import fetch_links_from_pages_from_i_to_j
 from psycopg2._psycopg import connection
+from sqlalchemy.orm.session import Session
 
 def fetch_then_save_to_db_links_from_pages_from_i_to_j(
-    log_txt: str, error_txt: str, i: int, j: int, connection: connection
+    log_txt: str, error_txt: str, i: int, j: int, session: Session
 ) -> None:
     log_txt, error_txt, _ = validate_and_timestamp_output_paths(
         log_txt, error_txt, "results"
@@ -27,17 +28,17 @@ def fetch_then_save_to_db_links_from_pages_from_i_to_j(
     )):
         insert_list_of_links(
             links=list_of_about_69_links,
-            connection=connection,
+            session=session,
             log_txt=log_txt,
             error_txt=error_txt
         )
 
 if __name__ == '__main__':
-    conn = connect_to_db()
+    session=get_db_session()
     fetch_then_save_to_db_links_from_pages_from_i_to_j(
-        connection=conn,
+        session=session,
         error_txt='iter1\logs\links_error',
         i=2,
-        j=1000,
+        j=838,
         log_txt='iter1\logs\links_log'
     )
