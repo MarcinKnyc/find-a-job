@@ -1,5 +1,5 @@
 from logging.config import fileConfig
-import os
+from get_session import get_postgres_url_from_env_variables
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -16,6 +16,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 from models import Base
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
@@ -42,18 +43,13 @@ def run_migrations_offline() -> None:
     """
     # # url = config.get_main_option("sqlalchemy.url")
     # we don't get the url from alembic.ini, we get it from environment variables in set)connection_variables_{debug/production}.ps1
-    FIND_A_JOB_USER = os.environ["FIND_A_JOB_USER"]
-    FIND_A_JOB_PASSWORD = os.environ["FIND_A_JOB_PASSWORD"]
-    FIND_A_JOB_HOST = os.environ["FIND_A_JOB_HOST"]
-    FIND_A_JOB_PORT = os.environ["FIND_A_JOB_PORT"]
-    FIND_A_JOB_DBNAME = os.environ["FIND_A_JOB_DBNAME"]
-    url = f"postgresql://{FIND_A_JOB_USER}:{FIND_A_JOB_PASSWORD}@{FIND_A_JOB_HOST}:{FIND_A_JOB_PORT}/{FIND_A_JOB_DBNAME}"
+    url = get_postgres_url_from_env_variables()
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        compare_type=True
+        compare_type=True,
     )
 
     with context.begin_transaction():
@@ -72,19 +68,12 @@ def run_migrations_online() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-    FIND_A_JOB_USER = os.environ["FIND_A_JOB_USER"]
-    FIND_A_JOB_PASSWORD = os.environ["FIND_A_JOB_PASSWORD"]
-    FIND_A_JOB_HOST = os.environ["FIND_A_JOB_HOST"]
-    FIND_A_JOB_PORT = os.environ["FIND_A_JOB_PORT"]
-    FIND_A_JOB_DBNAME = os.environ["FIND_A_JOB_DBNAME"]
-    url = f"postgresql://{FIND_A_JOB_USER}:{FIND_A_JOB_PASSWORD}@{FIND_A_JOB_HOST}:{FIND_A_JOB_PORT}/{FIND_A_JOB_DBNAME}"
+    url = get_postgres_url_from_env_variables()
     connectable.url = url
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, 
-            target_metadata=target_metadata,
-            compare_type=True
+            connection=connection, target_metadata=target_metadata, compare_type=True
         )
 
         with context.begin_transaction():
