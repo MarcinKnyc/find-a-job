@@ -32,8 +32,8 @@ def export_every_offer_not_yet_in_qdrant(
     size = 50
     print(f'splitting {len(unexported_job_offers_postgres)} unexported offers in db to groups of {size}')
     for unexported_job_offer_batch in partition(unexported_job_offers_postgres, size=size):
-        with open(log_txt, "a") as error_file:
-            log_txt.write(
+        with open(log_txt, "a") as log_file:
+            log_file.write(
                 f"{datetime.now()}Exporting {len(unexported_job_offer_batch)} offers to qdrant from postgres.\n"
             )
         for retry_num in range(retries_error):
@@ -62,6 +62,6 @@ if __name__ == '__main__':
         timeout_everytime_ms=10,
         timeout_error_ms=100,
         retries_error=5,
-        log_txt=r".\debug\logs\offers_export_log",
-        error_txt=r".\debug\logs\offers_export_error",
+        log_txt=r".\iter1\logs\offers_export_log",
+        error_txt=r".\iter1\logs\offers_export_error",
     )
