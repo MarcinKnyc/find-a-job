@@ -9,12 +9,12 @@ def get_qdrant_collection_client():
     host = os.environ['JOB_HOST']
     collection_name = os.environ['JOB_COLLECTION_NAME']
     model_name = os.environ['JOB_ON_DISK']
-    
+
     embeddings = HuggingFaceEmbeddings(
         model_name=model_name
     )
 
-    qdrant_url = f"{host}:{port}"
+    qdrant_url = f"http://{host}:{port}"
     client = qdrant_client.QdrantClient(
         qdrant_url,
         api_key=api_key, # For Qdrant Cloud, None for local instance

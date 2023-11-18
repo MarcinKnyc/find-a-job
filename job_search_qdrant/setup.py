@@ -7,7 +7,8 @@ setup(
     author='Marcin Knyć',
     # author_email='na@na.com',
     license='GNU GENERAL PUBLIC LICENSE',
-    packages=['repositories'], # todo: change
+    packages=[
+        'repositories'], # todo: change
     install_requires=[
         'qdrant-client',
         'sentence-transformers',

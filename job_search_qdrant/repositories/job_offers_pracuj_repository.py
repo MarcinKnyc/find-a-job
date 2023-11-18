@@ -1,7 +1,7 @@
 from typing import List
 from langchain.vectorstores.qdrant import Qdrant
 from langchain.schema import Document
-from job_search_postgres.models import Offer
+from models import Offer
 
 
 class JobOffersPracujRepository:

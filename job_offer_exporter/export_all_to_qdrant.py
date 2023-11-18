@@ -7,8 +7,8 @@ from repositories.offer_repository import fetch_all_offers_not_exported_to_qdran
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from sqlalchemy.orm.session import Session
 
-from job_offer_qdrant.repositories.get_client import get_qdrant_collection_client
-from job_offer_qdrant.repositories.job_offers_pracuj_repository import JobOffersPracujRepository
+from repositories.get_client import get_qdrant_collection_client
+from repositories.job_offers_pracuj_repository import JobOffersPracujRepository
 
 def partition(list, size):
     for i in range(0, len(list), size):

@@ -21,7 +21,7 @@ def recreate_collection() -> None:
     model_vector_size = os.environ['JOB_MODEL_VECTOR_SIZE']
     on_disk = os.environ['JOB_ON_DISK']
     client = QdrantClient(
-        host=host,
+        url=host,
         port=port,
         api_key=api_key
         )
