@@ -1,15 +1,14 @@
 FROM ubuntu
+SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -yqq
 RUN apt-get upgrade -yqq
 RUN apt-get install python3 wget curl -yqq
+RUN apt-get install git -yqq
 RUN apt-get install python3-pip -yqq
 
-RUN mkdir model
-COPY requirements.txt .
-
-RUN pip install -r requirements.txt
-COPY src src
+COPY init.sh .
+RUN source init.sh
 
 ENTRYPOINT ["python3"]
-CMD ["src/job_search_flask.py"]
+CMD ["find-a-job/job_search_flask/src/job_search_flask.py"]

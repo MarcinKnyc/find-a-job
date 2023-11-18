@@ -5,6 +5,7 @@ from models import Offer
 
 
 class JobOffersPracujRepository:
+    OFFER_METADATA_POSTGRES_ID_KEY = "offer_postgres_id"
     def similarity_search(
         self,
         query: str,
@@ -23,7 +24,7 @@ class JobOffersPracujRepository:
             documents=[
                 Document(
                     page_content=self.get_offer_description_str(job_offer=job_offer),
-                    metadata={"offer_postgres_id": job_offer.id},
+                    metadata={self.OFFER_METADATA_POSTGRES_ID_KEY: job_offer.id},
                 )
                 for job_offer in pracuj_job_descriptions
             ],

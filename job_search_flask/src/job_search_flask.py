@@ -1,13 +1,35 @@
 from flask import Flask, request
 import os
+from repositories.get_client import get_qdrant_collection_client
+from repositories.job_offers_pracuj_repository import JobOffersPracujRepository
+from langchain.schema import Document
+from repositories.offer_repository import fetch_offer_by_postgres_id
+import json
+from get_session import get_db_session
+
 
 app = Flask(__name__)
+job_offers_pracuj_repository = JobOffersPracujRepository()
+qdrant_collection_client = get_qdrant_collection_client()
+postgres_session = get_db_session()
 
 @app.route('/job_search',methods = ['POST'])
 def sentimentCheck():
 	if request.method == 'POST':
 		text = request.json['text']
-		return f'The best job offer we found for you is: {text}'
+		found_offers = job_offers_pracuj_repository.similarity_search(
+			collection_client=qdrant_collection_client,
+			k_approximate_nearest_neighbours=1,
+			query=text,
+		)
+		found_offer_postgres_id = found_offers[0].metadata[job_offers_pracuj_repository.OFFER_METADATA_POSTGRES_ID_KEY]
+		if not found_offer_postgres_id:
+			return "Sorry, we don't have a job offer for you"
+		found_offer = fetch_offer_by_postgres_id(session = postgres_session, offer_postgres_id = found_offer_postgres_id)
+		if not found_offer:
+			return "Sorry, we don't have a job offer for you"
+		found_offer_to_pretty_json_str = json.dumps(found_offer.__dict__())
+		return f'The best job offer we found for you is: {found_offer_to_pretty_json_str}'
 
 
 if __name__ == "__main__":
