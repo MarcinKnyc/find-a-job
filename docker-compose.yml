@@ -20,11 +20,11 @@ services:
     volumes:
       - ./database:/qdrant/storage:z
       # CONFIGS
-      - ./job_offer_qdrant/config/config.yaml:/qdrant/config/config.yaml
-      - ./job_offer_qdrant/config/local.yaml:/qdrant/config/local.yaml
+      - ./job_search_qdrant/config/config.yaml:/qdrant/config/config.yaml
+      - ./job_search_qdrant/config/local.yaml:/qdrant/config/local.yaml
       # Uncomment when they are modified:
-      # - ./job_offer_qdrant/config/development.yaml:/qdrant/config/development.yaml
-      # - ./job_offer_qdrant/config/production.yaml:/qdrant/config/production.yaml
+      # - ./job_search_qdrant/config/development.yaml:/qdrant/config/development.yaml
+      # - ./job_search_qdrant/config/production.yaml:/qdrant/config/production.yaml
       # in case of bad accuracy in search, consider m and ef_construct values in config.
       # in case of bad speed in upserts, consider turning off indexing while bulk upserting (see qdrant documentation)
       # changed: hnsw_index.on_disk: true; was false; service.grpc_port: null; was 6334; telemetry_disabled: true; was false; api_key.

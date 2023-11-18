@@ -1,4 +1,14 @@
 import streamlit as st
+import os
+from repositories.get_client import get_qdrant_collection_client
+from repositories.job_offers_pracuj_repository import JobOffersPracujRepository
+from langchain.schema import Document
+from repositories.offer_repository import fetch_offer_by_postgres_id
+import json
+from get_session import get_db_session
+job_offers_pracuj_repository = JobOffersPracujRepository()
+qdrant_collection_client = get_qdrant_collection_client()
+postgres_session = get_db_session()	
 
 
 st.header("Find the most appropriate job offers for your resume!")
@@ -8,7 +18,19 @@ sent=st.text_area("Enter your CV in plain-text format. Max ", height=400)
 # prediction1=model.predict(vector_sent1)[0]
 
 if st.button("Predict"):
-	st.success(f"The most appropriate job offer is: {sent}!")
+	found_offers = job_offers_pracuj_repository.similarity_search(
+			collection_client=qdrant_collection_client,
+			k_approximate_nearest_neighbours=1,
+			query=sent,
+		)
+	found_offer_postgres_id = found_offers[0].metadata[job_offers_pracuj_repository.OFFER_METADATA_POSTGRES_ID_KEY]
+	if not found_offer_postgres_id:
+		st.success( "Sorry, we don't have a job offer for you")
+	found_offer = fetch_offer_by_postgres_id(session = postgres_session, offer_postgres_id = found_offer_postgres_id)
+	if not found_offer:
+		st.success( "Sorry, we don't have a job offer for you")
+	found_offer_to_pretty_json_str = json.dumps(found_offer.__dict__())
+	st.success(f"The most appropriate job offer is: {found_offer_to_pretty_json_str}!")
 
 
 
