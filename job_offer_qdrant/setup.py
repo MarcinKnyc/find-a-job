@@ -11,6 +11,7 @@ setup(
     install_requires=[
         'qdrant-client',
         'sentence-transformers',
-        'numpy'
+        'numpy',
+        'langchain'
     ]
 )

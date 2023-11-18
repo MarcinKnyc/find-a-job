@@ -1,8 +1,8 @@
 from qdrant_client import QdrantClient, models
-import json
+import os
 
 
-def recreate_collection(config_filename: str) -> None:
+def recreate_collection() -> None:
     """
     IMPORTANT!
     The config files don't contain the secret API key. 
@@ -14,13 +14,12 @@ def recreate_collection(config_filename: str) -> None:
     warnings.warn("Api key is used with unsecure connection.") 
     xD
     """
-    config = json.load(open(f'configs/{config_filename}'))
-    api_key = config['api_key']
-    port = config['port']
-    host = config['host']
-    collection_name = config['collection_name']
-    model_vector_size = config['model_vector_size']
-    on_disk = config['on_disk']
+    api_key = os.environ['JOB_API_KEY']
+    port = os.environ['JOB_PORT']
+    host = os.environ['JOB_HOST']
+    collection_name = os.environ['JOB_COLLECTION_NAME']
+    model_vector_size = os.environ['JOB_MODEL_VECTOR_SIZE']
+    on_disk = os.environ['JOB_ON_DISK']
     client = QdrantClient(
         host=host,
         port=port,
@@ -35,4 +34,4 @@ def recreate_collection(config_filename: str) -> None:
     )
 
 if __name__ == '__main__':
-    recreate_collection('default.json')
+    recreate_collection()

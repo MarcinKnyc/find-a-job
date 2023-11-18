@@ -1,0 +1,6 @@
+$env:JOB_PORT = "6333"
+$env:JOB_HOST = "http://localhost"
+$env:JOB_COLLECTION_NAME = "job_offers_pracuj"
+$env:JOB_MODEL_VECTOR_SIZE = "768"
+$env:JOB_ON_DISK = "true"
+$env:JOB_API_KEY = "not_my_real_key"
