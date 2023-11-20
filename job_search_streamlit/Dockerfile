@@ -10,4 +10,4 @@ RUN apt-get install python3-pip -yqq
 COPY init.sh .
 RUN source init.sh
 
-ENTRYPOINT ["streamlit", "run", "find-a-job/job_search_postgres/src/job_search_streamlit.py", "--server.port=18503"]
+ENTRYPOINT ["streamlit", "run", "/find-a-job/job_search_streamlit/src/job_search_streamlit.py", "--server.port=18503"]
