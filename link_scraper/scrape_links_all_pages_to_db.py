@@ -1,7 +1,7 @@
 
 
 from get_session import get_db_session
-from repositories.link_repository import insert_list_of_links
+from repositories_postgres.link_repository import insert_list_of_links
 from tqdm import tqdm
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from scrape_links_all_pages import fetch_links_from_pages_from_i_to_j

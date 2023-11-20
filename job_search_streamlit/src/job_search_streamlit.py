@@ -1,9 +1,9 @@
 import streamlit as st
 import os
-from repositories.get_client import get_qdrant_collection_client
-from repositories.job_offers_pracuj_repository import JobOffersPracujRepository
+from repositories_qdrant.get_client import get_qdrant_collection_client
+from repositories_qdrant.job_offers_pracuj_repository import JobOffersPracujRepository
 from langchain.schema import Document
-from repositories.offer_repository import fetch_offer_by_postgres_id
+from repositories_postgres.offer_repository import fetch_offer_by_postgres_id
 import json
 from get_session import get_db_session
 job_offers_pracuj_repository = JobOffersPracujRepository()

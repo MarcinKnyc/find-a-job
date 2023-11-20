@@ -1,7 +1,7 @@
 
 from get_session import get_db_session
-from repositories.link_repository import fetch_all_links_without_offers
-from repositories.offer_repository import insert_offer
+from repositories_postgres.link_repository import fetch_all_links_without_offers
+from repositories_postgres.offer_repository import insert_offer
 from tqdm import tqdm
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from scrape_many_job_offers import fetch_many_job_offers

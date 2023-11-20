@@ -3,12 +3,12 @@ from datetime import datetime
 import time
 from get_session import get_db_session
 from langchain.vectorstores.qdrant import Qdrant
-from repositories.offer_repository import fetch_all_offers_not_exported_to_qdrant
+from repositories_postgres.offer_repository import fetch_all_offers_not_exported_to_qdrant
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from sqlalchemy.orm.session import Session
 
-from repositories.get_client import get_qdrant_collection_client
-from repositories.job_offers_pracuj_repository import JobOffersPracujRepository
+from repositories_qdrant.get_client import get_qdrant_collection_client
+from repositories_qdrant.job_offers_pracuj_repository import JobOffersPracujRepository
 
 def partition(list, size):
     for i in range(0, len(list), size):

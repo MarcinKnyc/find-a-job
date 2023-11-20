@@ -7,7 +7,7 @@ setup(
     author='Marcin Knyć',
     # author_email='na@na.com',
     license='GNU GENERAL PUBLIC LICENSE',
-    packages=['repositories'],
+    packages=['repositories_postgres'],
     install_requires=[
         'alembic',
         'psycopg2-binary',

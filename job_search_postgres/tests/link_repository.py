@@ -1,5 +1,5 @@
 from get_session import get_db_session
-from repositories.link_repository import insert_list_of_links
+from repositories_postgres.link_repository import insert_list_of_links
 
 
 if __name__ == '__main__':

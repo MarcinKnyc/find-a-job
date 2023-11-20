@@ -1,7 +1,7 @@
 import time
 from typing import Generator, List
 from models import Link, Offer
-from repositories.offer_repository import insert_offer
+from repositories_postgres.offer_repository import insert_offer
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from scrape_one_job_offer import fetch_job_offer_one_page
 from datetime import datetime

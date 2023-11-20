@@ -11,3 +11,4 @@ postgres_database/
 **iter3/
 **iter4/
 **.vscode/
+.env.local
