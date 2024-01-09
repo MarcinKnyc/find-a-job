@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 from repositories_qdrant.get_client import get_qdrant_collection_client
 from repositories_qdrant.job_offers_pracuj_repository import JobOffersPracujRepository
@@ -28,8 +28,8 @@ def sentimentCheck():
 		found_offer = fetch_offer_by_postgres_id(session = postgres_session, offer_postgres_id = found_offer_postgres_id)
 		if not found_offer:
 			return "Sorry, we don't have a job offer for you"
-		found_offer_to_pretty_json_str = json.dumps(found_offer.__dict__())
-		return f'The best job offer we found for you is: {found_offer_to_pretty_json_str}'
+		found_offer_to_pretty_str = job_offers_pracuj_repository.get_offer_description_with_link_str(found_offer)
+		return f'The best job offer we found for you is: {found_offer_to_pretty_str}'
 
 
 if __name__ == "__main__":

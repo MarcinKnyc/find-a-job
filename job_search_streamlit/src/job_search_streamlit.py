@@ -29,8 +29,8 @@ if st.button("Predict"):
 	found_offer = fetch_offer_by_postgres_id(session = postgres_session, offer_postgres_id = found_offer_postgres_id)
 	if not found_offer:
 		st.success( "Sorry, we don't have a job offer for you")
-	found_offer_to_pretty_json_str = json.dumps(found_offer.__dict__())
-	st.success(f"The most appropriate job offer is: {found_offer_to_pretty_json_str}!")
+	found_offer_to_pretty_str = job_offers_pracuj_repository.get_offer_description_with_link_str(found_offer)
+	st.success(f"The most appropriate job offer is: {found_offer_to_pretty_str}!")
 
 
 

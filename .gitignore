@@ -12,3 +12,7 @@ postgres_database/
 **iter4/
 **.vscode/
 .env.local
+pip_package_cache/
+huggingface_cache/
+pytorch_cache/
+torch_cache/

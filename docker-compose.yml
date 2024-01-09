@@ -38,7 +38,10 @@ services:
       - "job_search_postgres"
     volumes:
       - ./pip_package_cache:/root/.cache/pip
-    entrypoint: ["python3", "job_search_streamlit/src/job_search_streamlit.py"]
+      - ./huggingface_cache:/root/.cache/huggingface
+      - ./pytorch_cache:/root/.cache/pytorch
+      - ./torch_cache:/root/.cache/torch
+    entrypoint: ["streamlit", "run", "job_search_streamlit/src/job_search_streamlit.py", "--server.port=18503"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
       - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
@@ -62,6 +65,9 @@ services:
       - "job_search_postgres"
     volumes:
       - ./pip_package_cache:/root/.cache/pip
+      - ./huggingface_cache:/root/.cache/huggingface
+      - ./pytorch_cache:/root/.cache/pytorch
+      - ./torch_cache:/root/.cache/torch
     entrypoint: ["python3", "job_search_flask/src/job_search_flask.py"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
