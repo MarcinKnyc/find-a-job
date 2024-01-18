@@ -38,10 +38,15 @@ def export_every_offer_not_yet_in_qdrant(
             )
         for retry_num in range(retries_error):
             try:
+                print(f"Exporting {len(unexported_job_offer_batch)} from postgres to qdrant")
                 job_offers_pracuj_repository_qdrant.add_documents(
                     collection_client=qdrant_collection_client,
                     pracuj_job_descriptions=unexported_job_offer_batch
                 )
+                print(f"Success. Marking {len(unexported_job_offer_batch)} offers as exported_to_qdrant in postgres.")
+                for exported_offer in unexported_job_offer_batch:
+                    exported_offer.exported_to_qdrant = True
+                session.commit()
                 time.sleep(timeout_everytime_ms / 1000)
                 break
             except Exception as e:

@@ -81,4 +81,5 @@ def fetch_job_offer_one_page(
         responsibilities=values_fetched_json["responsibilities"][0],
         experience_requirements=values_fetched_json["experienceRequirements"][0],
         link=link
+        # exported_to_qdrant is None by default, which is the checked condition in fetch_all_offers_not_exported
     )
