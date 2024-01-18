@@ -1,7 +1,7 @@
 import os
 import qdrant_client
-from langchain.vectorstores import qdrant
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import qdrant
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 def get_qdrant_collection_client():
     api_key = os.environ['JOB_API_KEY']

@@ -68,7 +68,7 @@ services:
       - ./huggingface_cache:/root/.cache/huggingface
       - ./pytorch_cache:/root/.cache/pytorch
       - ./torch_cache:/root/.cache/torch
-    entrypoint: ["python3", "job_search_flask/src/job_search_flask.py"]
+    entrypoint: ["python3", "-u", "job_search_flask/src/job_search_flask.py"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
       - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
@@ -82,6 +82,12 @@ services:
       - JOB_ON_DISK=${JOB_ON_DISK}
       - JOB_API_KEY=${JOB_API_KEY}
       - JOB_MODEL_NAME=${JOB_MODEL_NAME}
+
+  # job_search_link_scraper:
+  #   build: .
+  
+  # job_search_offer_scraper:
+  #   build: .
 
 
   

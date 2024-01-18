@@ -4,3 +4,4 @@ joblib
 scikit-learn==1.0.2
 langchain
 streamlit
+langchain-community

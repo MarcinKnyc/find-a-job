@@ -2,8 +2,9 @@ import requests
 from typing import Optional
 from get_session import get_db_session
 from models import Offer
-from repositories_postgres.offer_repository import fetch_n_random_offers, fetch_offer_by_link
+from repositories_postgres.offer_repository import fetch_all_offers, fetch_n_random_offers, fetch_offer_by_link
 from repositories_qdrant.job_offers_pracuj_repository import JobOffersPracujRepository
+from tqdm import tqdm
 
 API_URL = "http://localhost:15000/job_search"
 QUERY = "Chcę być dyrektorem dużej firmy i zarabiać gruby hajs"
@@ -33,11 +34,25 @@ def test_one_offer(session, offer_query: Offer, field_to_check: str) -> bool:
     # print(f'query offer link: {offer_query.link.link}')
     # print(f'query offer title: {offer_query.title}')
     # print(f'query offer description: {func_repository.get_offer_description_str(job_offer=offer_query)}')
+    match field_to_check:
+        case 'description':
+            response = query_similar_job_offer(API_URL, func_repository.get_offer_description_str(job_offer=offer_query))
+        case 'title': 
+            response = query_similar_job_offer(API_URL, offer_query.title)
+        case 'responsibilities':
+            response = query_similar_job_offer(API_URL, offer_query.responsibilities)
+        case 'industry':
+            response = query_similar_job_offer(API_URL, offer_query.industry)
+        case 'industry2':
+            response = query_similar_job_offer(API_URL, f'Branża: {offer_query.industry}')
     
-    response = query_similar_job_offer(API_URL, func_repository.get_offer_description_str(job_offer=offer_query))
     responsibilities = extract_offer_field_from_api_response(response)
     title = extract_offer_title_from_api_response(response)
-    link = extract_offer_field_from_api_response(response, line_start_string_to_query_for="The best job offer we found for you is: Link: ")
+    link = extract_offer_field_from_api_response(response, line_start_string_to_query_for="Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: Link: ")
+    if not link:
+        print (response)
+        raise Exception('no link')
+    industry = extract_offer_field_from_api_response(response, "Branża: ")
     offer_found_by_link = fetch_offer_by_link(session=session, offer_link=link)
     # print('------')
     # print(f'response title: {title}')
@@ -56,13 +71,17 @@ def test_one_offer(session, offer_query: Offer, field_to_check: str) -> bool:
     # #    func_repository.get_offer_description_str(job_offer=offer_found_by_link))
     # # print('------')
     match field_to_check:
-       case 'description':
-          return (func_repository.get_offer_description_str(job_offer=offer_query) ==
-            func_repository.get_offer_description_str(job_offer=offer_found_by_link))
-       case 'title': 
-          return offer_query.title == title
-       case 'responsibilities':
-          return offer_query.responsibilities == responsibilities
+        case 'description':
+            return (func_repository.get_offer_description_str(job_offer=offer_query) ==
+                func_repository.get_offer_description_str(job_offer=offer_found_by_link))
+        case 'title': 
+            return offer_query.title == title
+        case 'responsibilities':
+            return offer_query.responsibilities == responsibilities
+        case 'industry':
+            return offer_query.industry == industry
+        case 'industry2':
+            return offer_query.industry == industry
 
 def perform_test(
       session, 
@@ -84,20 +103,21 @@ def perform_test(
                 Test is successful if query job offer {field_to_check} is exactly the same as the result job offer {field_to_check}.''')
     
     
-    n_random_offers = fetch_n_random_offers(
-        session=session,
-        n_offers=n_offers
-    )
+    # n_random_offers = fetch_n_random_offers(
+    #     session=session,
+    #     n_offers=n_offers
+    # )
+    n_random_offers = fetch_all_offers(session=session)
     results = []
-    for offer in n_random_offers:
+    for offer in tqdm(n_random_offers):
         results.append(test_one_offer(session, offer_query=offer, field_to_check=field_to_check))
     
     # print (results)
     true_count = len([result for result in results if result]) # only true values
     false_count = len([result for result in results if not result]) # only true values
     all_count = true_count + false_count
-    if all_count != n_offers:
-       raise Exception("Incorrect number of responses provided by test_one_offer")
+    # if all_count != n_offers:
+    #    raise Exception("Incorrect number of responses provided by test_one_offer")
     print(f'{true_count} test cases passed successfully. {false_count} test cases failed. {all_count} cases total.')
 
     accuracy = true_count / all_count
@@ -119,5 +139,15 @@ if __name__ == "__main__":
    perform_test(
       session=session,
       field_to_check='responsibilities',
+      n_offers=100,
+   )   
+   perform_test(
+      session=session,
+      field_to_check='industry',
+      n_offers=100,
+   )
+   perform_test(
+      session=session,
+      field_to_check='industry2',
       n_offers=100,
    )
