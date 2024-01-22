@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 from typing import List
 
+from fix_str_encoding import fix_str_encoding
+
 
 def extract_all_values_from_json_for_given_key_recursively(
     json_to_search, key_to_search
@@ -53,11 +55,10 @@ def fetch_values_json_from_one_page(
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     script_tag = soup.find(html_tag_type_to_find, html_tag_identifiers)
-
     if script_tag is None:
         raise Exception(f"No script tag with identifiers {html_tag_identifiers} found")
-
-    try:
+    
+    try:        
         fetched_json = json.loads(script_tag.string)
     except json.JSONDecodeError:
         raise Exception(
@@ -73,4 +74,11 @@ def fetch_values_json_from_one_page(
             json_to_search=fetched_json, key_to_search=key_to_search_in_json
         )        
     
+    # Polish-specific characters are wrongly encoded in the json fetched from the website.
+    for key, list_of_values in json_values.items():
+        for i, value in enumerate(list_of_values):
+            if value and type(value) == str:
+                list_of_values[i] = fix_str_encoding(str_with_broken_encoding=value)
+
+
     return json_values

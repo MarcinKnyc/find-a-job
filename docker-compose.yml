@@ -32,7 +32,7 @@ services:
   job_search_streamlit:
     build: .
     ports:
-      - "18503:18503"
+      - ${JOB_WEB_PORT}:${JOB_WEB_PORT}
     depends_on:
       - "job_search_qdrant"
       - "job_search_postgres"
@@ -41,7 +41,7 @@ services:
       - ./huggingface_cache:/root/.cache/huggingface
       - ./pytorch_cache:/root/.cache/pytorch
       - ./torch_cache:/root/.cache/torch
-    entrypoint: ["streamlit", "run", "job_search_streamlit/src/job_search_streamlit.py", "--server.port=18503"]
+    entrypoint: ["streamlit", "run", "job_search_streamlit/src/job_search_streamlit.py", "--server.port=${JOB_WEB_PORT}"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
       - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
@@ -55,11 +55,13 @@ services:
       - JOB_ON_DISK=${JOB_ON_DISK}
       - JOB_API_KEY=${JOB_API_KEY}
       - JOB_MODEL_NAME=${JOB_MODEL_NAME}
+      - JOB_REST_PORT=${JOB_REST_PORT}
+      - JOB_WEB_PORT=${JOB_WEB_PORT}
 
   job_search_flask:
     build: .
     ports:
-      - "15000:15000"
+      - ${JOB_REST_PORT}:${JOB_REST_PORT}
     depends_on:
       - "job_search_qdrant"
       - "job_search_postgres"
@@ -68,6 +70,7 @@ services:
       - ./huggingface_cache:/root/.cache/huggingface
       - ./pytorch_cache:/root/.cache/pytorch
       - ./torch_cache:/root/.cache/torch
+      - ./job_search_flask/src/job_search_flask.py:/app/job_search_flask/src/job_search_flask.py
     entrypoint: ["python3", "-u", "job_search_flask/src/job_search_flask.py"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
@@ -82,13 +85,65 @@ services:
       - JOB_ON_DISK=${JOB_ON_DISK}
       - JOB_API_KEY=${JOB_API_KEY}
       - JOB_MODEL_NAME=${JOB_MODEL_NAME}
+      - JOB_REST_PORT=${JOB_REST_PORT}
+      - JOB_WEB_PORT=${JOB_WEB_PORT}
 
-  # job_search_link_scraper:
-  #   build: .
+  job_search_link_scraper:
+    build: 
+      dockerfile: ./pracuj_scraper/Dockerfile
+      context: .
+    restart: 'no'
+    volumes:
+      - ./logs/scraper:/app/logs
+    depends_on:
+      - "job_search_postgres"
+    entrypoint: ["python3", "-u", "pracuj_scraper/scrape_links_all_pages_to_db.py"]
+    environment:
+      - FIND_A_JOB_USER=${FIND_A_JOB_USER}
+      - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
+      - FIND_A_JOB_HOST=${FIND_A_JOB_HOST}
+      - FIND_A_JOB_PORT=${FIND_A_JOB_PORT}
+      - FIND_A_JOB_DBNAME=${FIND_A_JOB_DBNAME}
   
-  # job_search_offer_scraper:
-  #   build: .
+  job_search_offer_scraper:
+    build: 
+      dockerfile: ./pracuj_scraper/Dockerfile
+      context: .
+    restart: 'no'
+    volumes:
+      - ./logs/scraper:/app/logs
+    depends_on:
+      - "job_search_postgres"
+    entrypoint: ["python3", "-u", "pracuj_scraper/scrape_offers_for_links_in_db.py"]
+    environment:
+      - FIND_A_JOB_USER=${FIND_A_JOB_USER}
+      - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
+      - FIND_A_JOB_HOST=${FIND_A_JOB_HOST}
+      - FIND_A_JOB_PORT=${FIND_A_JOB_PORT}
+      - FIND_A_JOB_DBNAME=${FIND_A_JOB_DBNAME}
 
+  job_search_offer_exporter:
+    build: .
+    restart: 'no'
+    depends_on:
+      - "job_search_postgres"
+      - "job_search_qdrant"
+    entrypoint: ["python3", "-u", "job_offer_exporter/exporter/export_all_to_qdrant.py"]
+    environment:
+      - FIND_A_JOB_USER=${FIND_A_JOB_USER}
+      - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}
+      - FIND_A_JOB_HOST=${FIND_A_JOB_HOST}
+      - FIND_A_JOB_PORT=${FIND_A_JOB_PORT}
+      - FIND_A_JOB_DBNAME=${FIND_A_JOB_DBNAME}
+      - JOB_PORT=${JOB_PORT}
+      - JOB_HOST=${JOB_HOST}
+      - JOB_COLLECTION_NAME=${JOB_COLLECTION_NAME}
+      - JOB_MODEL_VECTOR_SIZE=${JOB_MODEL_VECTOR_SIZE}
+      - JOB_ON_DISK=${JOB_ON_DISK}
+      - JOB_API_KEY=${JOB_API_KEY}
+      - JOB_MODEL_NAME=${JOB_MODEL_NAME}
+      
+  
 
   
 

@@ -1,3 +1,4 @@
+import html
 from flask import Flask, request, jsonify
 import os
 from repositories_qdrant.get_client import get_qdrant_collection_client
@@ -29,10 +30,11 @@ def sentimentCheck():
 		if not found_offer:
 			return "Przykro nam, nie znaleźliśmy odpowiedniej dla Ciebie oferty pracy."
 		found_offer_to_pretty_str = job_offers_pracuj_repository.get_offer_description_with_link_str(found_offer)
-		return f'Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: {found_offer_to_pretty_str}'
+		decocded = found_offer_to_pretty_str.encode('latin1').decode('utf8') 
+		return f'Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: {decocded}'
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 15000))
+    port = int(os.environ.get("JOB_REST_PORT", 15000))
     app.run(debug=True,host='0.0.0.0',port=port)
 

@@ -1,6 +1,7 @@
 
 
 from get_session import get_db_session
+from fetch_number_of_link_pages import fetch_number_of_link_pages
 from repositories_postgres.link_repository import insert_list_of_links
 from tqdm import tqdm
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
@@ -35,10 +36,11 @@ def fetch_then_save_to_db_links_from_pages_from_i_to_j(
 
 if __name__ == '__main__':
     session=get_db_session()
+    number_of_link_pages = fetch_number_of_link_pages()
     fetch_then_save_to_db_links_from_pages_from_i_to_j(
         session=session,
-        error_txt='iter1\logs\links_error',
-        i=2,
-        j=838,
-        log_txt='iter1\logs\links_log'
+        error_txt='./logs/links_error',
+        i=2, # start at page 2. page 1 doesn't work, because it has a different url.
+        j=number_of_link_pages,
+        log_txt='./logs/links_log'
     )

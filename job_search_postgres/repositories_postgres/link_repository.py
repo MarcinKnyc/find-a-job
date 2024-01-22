@@ -37,10 +37,11 @@ def insert_list_of_links(
             insert_link(link=link, session=session)
         except UniqueViolation as e:
             session.rollback()
-            with open(error_txt, "a") as error_file:
-                error_file.write(
-                    f"{datetime.now()} Error pasting link {link_str} on {datetime.now()}. Link violates Unique Constraint. This is the 1st and last time (retries not implemented). Details: {e}\n"
-                )
+            # # SAVED FOR DEBUG:
+            # with open(error_txt, "a") as error_file:
+            #     error_file.write(
+            #         f"{datetime.now()} Error pasting link {link_str} on {datetime.now()}. Link violates Unique Constraint. This is the 1st and last time (retries not implemented). Details: {e}\n"
+            #     )
             failed_to_insert += 1
         except Exception as e:
             session.rollback()

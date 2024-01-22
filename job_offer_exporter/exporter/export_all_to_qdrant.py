@@ -67,6 +67,6 @@ if __name__ == '__main__':
         timeout_everytime_ms=10,
         timeout_error_ms=100,
         retries_error=5,
-        log_txt=r".\iter1\logs\offers_export_log",
-        error_txt=r".\iter1\logs\offers_export_error",
+        log_txt="./logs/offers_export_log",
+        error_txt="./logs/offers_export_error",
     )
