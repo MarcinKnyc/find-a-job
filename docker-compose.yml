@@ -129,6 +129,12 @@ services:
       - "job_search_postgres"
       - "job_search_qdrant"
     entrypoint: ["python3", "-u", "job_offer_exporter/exporter/export_all_to_qdrant.py"]
+    volumes:
+      - ./logs/exporter:/app/logs
+      - ./pip_package_cache:/root/.cache/pip
+      - ./huggingface_cache:/root/.cache/huggingface
+      - ./pytorch_cache:/root/.cache/pytorch
+      - ./torch_cache:/root/.cache/torch
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
       - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}

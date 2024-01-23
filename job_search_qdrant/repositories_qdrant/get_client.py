@@ -18,7 +18,7 @@ def get_qdrant_collection_client():
     qdrant_url = f"{host}:{port}"
     client = qdrant_client.QdrantClient(
         qdrant_url,
-        api_key=api_key, # For Qdrant Cloud, None for local instance
+        api_key=api_key, 
     )
 
     doc_store = qdrant.Qdrant(

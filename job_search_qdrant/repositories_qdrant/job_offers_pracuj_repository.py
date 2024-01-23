@@ -20,6 +20,11 @@ class JobOffersPracujRepository:
     def add_documents(
         self, pracuj_job_descriptions: List[Offer], collection_client: Qdrant
     ) -> None:
+        """
+        Vectorize and store job offer descriptions in Qdrant. Connection details should be in environment variables.
+        Careful! This function WILL insert duplicate vectors if you let it. Avoiding duplicate vectors in qdrant should be handled by 
+            exported_to_qdrant field of model Offer in postgres.
+        """
         collection_client.add_documents(
             documents=[
                 Document(

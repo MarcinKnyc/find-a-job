@@ -6,6 +6,7 @@ from langchain.vectorstores.qdrant import Qdrant
 from repositories_postgres.offer_repository import fetch_all_offers_not_exported_to_qdrant
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from sqlalchemy.orm.session import Session
+from datetime import datetime
 
 from repositories_qdrant.get_client import get_qdrant_collection_client
 from repositories_qdrant.job_offers_pracuj_repository import JobOffersPracujRepository
@@ -45,14 +46,16 @@ def export_every_offer_not_yet_in_qdrant(
                 )
                 print(f"Success. Marking {len(unexported_job_offer_batch)} offers as exported_to_qdrant in postgres.")
                 for exported_offer in unexported_job_offer_batch:
-                    exported_offer.exported_to_qdrant = True
+                    exported_offer.exported_to_qdrant = datetime.now()
                 session.commit()
                 time.sleep(timeout_everytime_ms / 1000)
                 break
             except Exception as e:
                 with open(error_txt, "a") as error_file:
                     error_file.write(
-                        f"{datetime.now()}Error exporting job offer batch. This is the {retry_num} time. Details: {e}\n"
+                        f"""{datetime.now()}Error exporting job offer batch. This is the {retry_num} time. 
+                        Postgres ID's of offers involved: {[offer.id for offer in unexported_job_offer_batch]}. 
+                        Details: {e}\n"""
                     )
 
                 time.sleep(timeout_error_ms / 1000)
