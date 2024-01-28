@@ -30,8 +30,8 @@ def scrape_offer_for_every_link_in_db(
     print(f'splitting {len(job_offer_links_postgres)} links without offers in db to groups of {size}. Expected number of batches: {len(job_offer_links_postgres) / size}')
     job_links_partitioned = partition(job_offer_links_postgres, size=size)
     print(f'Created {len(job_links_partitioned)} batches. Downloading offers for their links one by one.')    
-    for links_postgres_batch in (job_links_partitioned):
-    # for links_postgres_batch in tqdm(job_links_partitioned):
+    # for links_postgres_batch in (job_links_partitioned):
+    for links_postgres_batch in tqdm(job_links_partitioned):
         for offer in fetch_many_job_offers(
             job_offer_links=links_postgres_batch,
             timeout_everytime_ms=timeout_everytime_ms,

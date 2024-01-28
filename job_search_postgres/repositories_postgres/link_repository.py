@@ -1,3 +1,4 @@
+from psycopg2 import IntegrityError
 from models import Link, Offer
 from sqlalchemy import exists
 from sqlalchemy.orm.session import Session
@@ -35,7 +36,7 @@ def insert_list_of_links(
         try:
             link = Link(link=link_str, date_added=datetime.now().date())
             insert_link(link=link, session=session)
-        except UniqueViolation as e:
+        except IntegrityError as e:
             session.rollback()
             # # SAVED FOR DEBUG:
             # with open(error_txt, "a") as error_file:

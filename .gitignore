@@ -17,3 +17,4 @@ pip_package_cache/
 huggingface_cache/
 pytorch_cache/
 torch_cache/
+temp/

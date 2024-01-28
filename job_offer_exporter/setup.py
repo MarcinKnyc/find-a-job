@@ -9,7 +9,7 @@ setup(
     license='GNU GENERAL PUBLIC LICENSE',
     packages=['exporter'],
     install_requires=[
-        'job_search_postgres',
-        'job_search_qdrant'
+        # 'job_search_postgres',
+        # 'job_search_qdrant'
     ]
 )

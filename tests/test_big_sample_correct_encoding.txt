@@ -1,0 +1,36 @@
+                Querying 3500 offers randomly from db.
+                Generating their descriptions.
+                Using these descriptions as queries to Flask API.
+                Getting the link from API response and fetching the entire offer, generating its description.
+                Test is successful if query job offer description is exactly the same as the result job offer description.
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 3500/3500 [11:15<00:00,  5.18it/s] 
+3179 test cases passed successfully. 321 test cases failed. 3500 cases total.
+accuracy: 0.9082857142857143
+
+                Querying 3500 offers randomly from db.
+                Using their title as queries to Flask API.
+                Test is successful if query job offer title is exactly the same as the result job offer title.
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 3500/3500 [03:28<00:00, 16.80it/s] 
+737 test cases passed successfully. 2763 test cases failed. 3500 cases total.
+accuracy: 0.21057142857142858
+
+                Querying 3500 offers randomly from db.
+                Using their responsibilities as queries to Flask API.
+                Test is successful if query job offer responsibilities is exactly the same as the result job offer responsibilities.        
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 3500/3500 [08:47<00:00,  6.63it/s] 
+1933 test cases passed successfully. 1567 test cases failed. 3500 cases total.
+accuracy: 0.5522857142857143
+
+                Querying 3500 offers randomly from db.
+                Using their industry as queries to Flask API.
+                Test is successful if query job offer industry is exactly the same as the result job offer industry.
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 3500/3500 [03:19<00:00, 17.56it/s] 
+2281 test cases passed successfully. 1219 test cases failed. 3500 cases total.
+accuracy: 0.6517142857142857
+
+                Querying 3500 offers randomly from db.
+                Using their industry2 as queries to Flask API.
+                Test is successful if query job offer industry2 is exactly the same as the result job offer industry2.
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 3500/3500 [03:52<00:00, 15.06it/s] 
+2005 test cases passed successfully. 1495 test cases failed. 3500 cases total.
+accuracy: 0.5728571428571428

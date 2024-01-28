@@ -30,8 +30,7 @@ def sentimentCheck():
 		if not found_offer:
 			return "Przykro nam, nie znaleźliśmy odpowiedniej dla Ciebie oferty pracy."
 		found_offer_to_pretty_str = job_offers_pracuj_repository.get_offer_description_with_link_str(found_offer)
-		decocded = found_offer_to_pretty_str.encode('latin1').decode('utf8') 
-		return f'Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: {decocded}'
+		return f'Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: {found_offer_to_pretty_str}'
 
 
 if __name__ == "__main__":
