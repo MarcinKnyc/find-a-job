@@ -1,4 +1,5 @@
 
+import time
 from get_session import get_db_session
 from repositories_postgres.link_repository import fetch_all_links_without_offers
 from repositories_postgres.offer_repository import insert_offer
@@ -44,11 +45,13 @@ def scrape_offer_for_every_link_in_db(
 
 if __name__ == '__main__':
     session = get_db_session()
-    scrape_offer_for_every_link_in_db(
-        session=session,
-        timeout_everytime_ms=100,
-        timeout_error_ms=1000,
-        retries_error=5,
-        log_txt="./logs/offers_log",
-        error_txt="./logs/offers_error",
-    )
+    while True:
+        scrape_offer_for_every_link_in_db(
+            session=session,
+            timeout_everytime_ms=100,
+            timeout_error_ms=1000,
+            retries_error=5,
+            log_txt="./logs/offers_log",
+            error_txt="./logs/offers_error",
+        )
+        time.sleep(3600*11) # 11h

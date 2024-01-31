@@ -64,12 +64,14 @@ def export_every_offer_not_yet_in_qdrant(
 if __name__ == '__main__':
     session = get_db_session()
     qdrant_collection_client = get_qdrant_collection_client()
-    export_every_offer_not_yet_in_qdrant(
-        postgres_session=session,
-        qdrant_collection_client=qdrant_collection_client,
-        timeout_everytime_ms=10,
-        timeout_error_ms=100,
-        retries_error=5,
-        log_txt="./logs/offers_export_log",
-        error_txt="./logs/offers_export_error",
-    )
+    while True:
+        export_every_offer_not_yet_in_qdrant(
+            postgres_session=session,
+            qdrant_collection_client=qdrant_collection_client,
+            timeout_everytime_ms=10,
+            timeout_error_ms=100,
+            retries_error=5,
+            log_txt="./logs/offers_export_log",
+            error_txt="./logs/offers_export_error",
+        )
+        time.sleep(3600*11) # 11h
