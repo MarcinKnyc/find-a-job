@@ -70,7 +70,6 @@ services:
       - ./huggingface_cache:/root/.cache/huggingface
       - ./pytorch_cache:/root/.cache/pytorch
       - ./torch_cache:/root/.cache/torch
-      - ./job_search_flask/src/job_search_flask.py:/app/job_search_flask/src/job_search_flask.py
     entrypoint: ["python3", "-u", "job_search_flask/src/job_search_flask.py"]
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}

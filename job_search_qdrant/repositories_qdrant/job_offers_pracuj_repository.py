@@ -54,3 +54,14 @@ class JobOffersPracujRepository:
             result += f"Benefity: {job_offer.job_benefits}\n\n"
         return result
     
+    def get_shortened_offer_description_with_link_str(self, job_offer: Offer, character_limit: int = 230) -> str:        
+        result = f"{job_offer.title} - {job_offer.hiring_organization} \n\n"
+        result += f"{job_offer.link.link} \n\n"
+        result += f"{job_offer.responsibilities} \n\n"
+        if job_offer.experience_requirements:
+            result += f"Wymagania: {job_offer.experience_requirements} \n\n"
+        result += f"Branża: {job_offer.industry} \n\n Typ zatrudnienia: {job_offer.employment_type} \n\n"
+        if job_offer.job_benefits:
+            result += f"Benefity: {job_offer.job_benefits} \n\n"
+        return result[:character_limit] + "... \n\n"
+    
