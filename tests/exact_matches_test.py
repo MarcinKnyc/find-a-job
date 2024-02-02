@@ -10,13 +10,20 @@ API_URL = "http://localhost:15000/job_search"
 QUERY = "Chcę być dyrektorem dużej firmy i zarabiać gruby hajs"
 
 def query_similar_job_offer(api_url: str, query: str) -> str:
-   response = requests.post(
-       url=api_url,
-       json={
-           "text": query
-       },
-       verify=False)
-   return response.text
+    response = requests.post(
+        url=api_url,
+        json={
+            "text": query,
+            "number_of_offers": 1
+        },
+    verify=False)
+    # try:
+    #     a = response.json()
+    #     b = a[0]
+    # except Exception as e:
+    #     print(response)
+    #     print(e)
+    return response.json()[0]
 
 def extract_offer_field_from_api_response(input_string: str, line_start_string_to_query_for: str = "Obowiązki: ") -> Optional[str]:
    lines = input_string.splitlines()
@@ -49,7 +56,7 @@ def test_one_offer(session, offer_query: Offer, field_to_check: str) -> bool:
     
     responsibilities = extract_offer_field_from_api_response(response)
     title = extract_offer_title_from_api_response(response)
-    link = extract_offer_field_from_api_response(response, line_start_string_to_query_for="Świetnie! Najlepsza znaleziona dla Ciebie oferta pracy to: Link: ")
+    link = extract_offer_field_from_api_response(response, line_start_string_to_query_for="Link: ")
     if not link:
         print (response)
         raise Exception('no link')
@@ -108,6 +115,7 @@ def perform_test(
     
     results = []
     for offer in tqdm(n_random_offers):
+    # for offer in (n_random_offers):
         results.append(test_one_offer(session, offer_query=offer, field_to_check=field_to_check))
     
     # print (results)
@@ -126,7 +134,7 @@ if __name__ == "__main__":
    session = get_db_session()
    n_random_offers = fetch_n_random_offers(
         session=session,
-        n_offers=1000
+        n_offers=100
     )
     # n_random_offers = fetch_all_offers(session=session)
    perform_test(
@@ -155,32 +163,32 @@ if __name__ == "__main__":
       n_random_offers=n_random_offers,
    )
    # n_random_offers = fetch_all_offers(session=session)
-   n_random_offers = fetch_n_random_offers(
-        session=session,
-        n_offers=3500
-    )
-   perform_test(
-      session=session,
-      field_to_check='description',
-      n_random_offers=n_random_offers,
-   )
-   perform_test(
-      session=session,
-      field_to_check='title',
-      n_random_offers=n_random_offers,
-   )
-   perform_test(
-      session=session,
-      field_to_check='responsibilities',
-      n_random_offers=n_random_offers,
-   )   
-   perform_test(
-      session=session,
-      field_to_check='industry',
-      n_random_offers=n_random_offers,
-   )
-   perform_test(
-      session=session,
-      field_to_check='industry2',
-      n_random_offers=n_random_offers,
-   )
+#    n_random_offers = fetch_n_random_offers(
+#         session=session,
+#         n_offers=3500
+#     )
+#    perform_test(
+#       session=session,
+#       field_to_check='description',
+#       n_random_offers=n_random_offers,
+#    )
+#    perform_test(
+#       session=session,
+#       field_to_check='title',
+#       n_random_offers=n_random_offers,
+#    )
+#    perform_test(
+#       session=session,
+#       field_to_check='responsibilities',
+#       n_random_offers=n_random_offers,
+#    )   
+#    perform_test(
+#       session=session,
+#       field_to_check='industry',
+#       n_random_offers=n_random_offers,
+#    )
+#    perform_test(
+#       session=session,
+#       field_to_check='industry2',
+#       n_random_offers=n_random_offers,
+#    )

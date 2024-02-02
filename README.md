@@ -25,19 +25,16 @@ source job_search_qdrant\set_env_vars_local.sh # local mode
 source job_search_qdrant\set_env_vars_production.sh # production mode
 python3 job_search_qdrant\create_job_offer_collection\create_collection.py
 ```
+1. (optional) Open a new terminal window, where the connection environment variables have NOT been set. 
 1. (optional) You should consider manually running the scrapers on the first launch. Open a new terminal window, where the connection environment variables have NOT been set.
 ```
 docker-compose up job_search_link_scraper && docker-compose up job_search_offer_scraper && docker-compose up job_search_offer_exporter
 ```
 ## Running the application
 1. Open a new terminal window, where the connection environment variables have NOT been set.
-1. Run continuous link scraper, contiunuous offer scraper
+1. Run the application
 ```
-source run-scrapers-in-loop.sh &
-```
-1. Run streamlit and flask servers
-```
-docker-compose up -d job_search_streamlit job_search_flask
+docker-compose up -d 
 ```
 1. ???
 1. Success! Go make yourself a coffee :)
