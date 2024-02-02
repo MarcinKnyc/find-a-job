@@ -17,12 +17,6 @@ def query_similar_job_offer(api_url: str, query: str) -> str:
             "number_of_offers": 1
         },
     verify=False)
-    # try:
-    #     a = response.json()
-    #     b = a[0]
-    # except Exception as e:
-    #     print(response)
-    #     print(e)
     return response.json()[0]
 
 def extract_offer_field_from_api_response(input_string: str, line_start_string_to_query_for: str = "Obowiązki: ") -> Optional[str]:
