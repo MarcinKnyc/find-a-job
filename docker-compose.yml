@@ -91,7 +91,6 @@ services:
     build: 
       dockerfile: ./pracuj_scraper/Dockerfile
       context: .
-    restart: 'no'
     volumes:
       - ./logs/scraper:/app/logs
     depends_on:
@@ -108,7 +107,6 @@ services:
     build: 
       dockerfile: ./pracuj_scraper/Dockerfile
       context: .
-    restart: 'no'
     volumes:
       - ./logs/scraper:/app/logs
     depends_on:
@@ -123,7 +121,6 @@ services:
 
   job_search_offer_exporter:
     build: .
-    restart: 'no'
     depends_on:
       - "job_search_postgres"
       - "job_search_qdrant"

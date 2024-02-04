@@ -13,6 +13,7 @@ setup(
         'qdrant-client',
         'sentence-transformers',
         'numpy',
-        'langchain'
+        # 'langchain',
+        # 'langchain-community == 0.0.16'
     ]
 )
