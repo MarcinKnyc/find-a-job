@@ -1,5 +1,5 @@
 from typing import List
-from langchain.vectorstores.qdrant import Qdrant
+from langchain_community.vectorstores import Qdrant
 from langchain.schema import Document
 from models import Offer
 

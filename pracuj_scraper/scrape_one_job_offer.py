@@ -14,7 +14,7 @@ def fetch_job_offer_one_page(
         "hiringOrganization",
         "datePosted",
         "validThrough",
-        "addressCountry",
+        "addressCountry", # after 6 months, there are 2 addresses instead of 1: geo (with latitude/longitude) and address.
         "addressRegion",
         "addressLocality", # null 8/250 times. Key doesn't exist in these 8 cases.
         "postalCode",  # null 32/47 times; does the key exist then?
@@ -39,6 +39,7 @@ def fetch_job_offer_one_page(
         html_tag_type_to_find="script",
         html_tag_identifiers={"type": "application/ld+json"},
         keys_to_search_in_json=KEYS_TO_SEARCH_IN_JSON,
+        should_merge_duplicates=True,
     )
 
     for key_to_search_in_json in KEYS_TO_SEARCH_IN_JSON:

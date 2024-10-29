@@ -1,6 +1,6 @@
 import os
 import qdrant_client
-from langchain_community.vectorstores import qdrant
+from langchain_community.vectorstores import Qdrant
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 def get_qdrant_collection_client():
@@ -21,7 +21,7 @@ def get_qdrant_collection_client():
         api_key=api_key, 
     )
 
-    doc_store = qdrant.Qdrant(
+    doc_store = Qdrant(
         client=client, collection_name=collection_name, 
         embeddings=embeddings,
     )

@@ -7,6 +7,7 @@ RUN apt-get upgrade -yqq
 RUN apt-get install python3 wget curl -yqq
 RUN apt-get install git -yqq
 RUN apt-get install python3-pip -yqq
+RUN rm /usr/lib/python3.12/EXTERNALLY-MANAGED
 
 COPY requirements.txt requirements.txt
 COPY init.sh init.sh

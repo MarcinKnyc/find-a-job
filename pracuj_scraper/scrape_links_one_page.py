@@ -19,4 +19,5 @@ def fetch_links_from_one_page(
         html_tag_type_to_find=html_tag_type_to_find,
         html_tag_identifiers=html_tag_identifiers,
         keys_to_search_in_json=[key_to_search_in_json],
+        should_merge_duplicates=False,
     )

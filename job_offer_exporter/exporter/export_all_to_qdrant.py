@@ -2,7 +2,7 @@
 from datetime import datetime
 import time
 from get_session import get_db_session
-from langchain.vectorstores.qdrant import Qdrant
+from langchain_community.vectorstores import Qdrant
 from repositories_postgres.offer_repository import fetch_all_offers_not_exported_to_qdrant
 from add_timestamp_to_log_filenames import validate_and_timestamp_output_paths
 from sqlalchemy.orm.session import Session

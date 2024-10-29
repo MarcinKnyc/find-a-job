@@ -38,6 +38,7 @@ def fetch_values_json_from_one_page(
     html_tag_type_to_find: str,
     html_tag_identifiers: object,
     keys_to_search_in_json: List[str],
+    should_merge_duplicates: bool
 ) -> dict[str, List[str]]:
     """
     Generic function used in many places.
@@ -72,13 +73,21 @@ def fetch_values_json_from_one_page(
     for key_to_search_in_json in keys_to_search_in_json:
         json_values[key_to_search_in_json] = extract_all_values_from_json_for_given_key_recursively(
             json_to_search=fetched_json, key_to_search=key_to_search_in_json
-        )        
+        )
+        if should_merge_duplicates:
+            # remove duplicate values for the same key. 
+            # Ignore when the value for a key is a json/dict, 
+            # because if a json is found twice, that's not expected and caller function should resolve it.
+            if (len(json_values[key_to_search_in_json]) > 0 
+                and not isinstance(json_values[key_to_search_in_json][0], dict)):
+                json_values[key_to_search_in_json] = list(set(json_values[key_to_search_in_json])) 
     
-    # Polish-specific characters are wrongly encoded in the json fetched from the website.
-    for key, list_of_values in json_values.items():
-        for i, value in enumerate(list_of_values):
-            if value and type(value) == str:
-                list_of_values[i] = fix_str_encoding(str_with_broken_encoding=value)
-
+    # # OBSOLETE, I THINK
+    # # Polish-specific characters are wrongly encoded in the json fetched from the website.
+    # for key, list_of_values in json_values.items():
+    #     for i, value in enumerate(list_of_values):
+    #         if value and type(value) == str:
+    #             # list_of_values[i] = fix_str_encoding(str_with_broken_encoding=value)\
+    #             pass
 
     return json_values

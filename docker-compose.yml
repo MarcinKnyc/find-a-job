@@ -131,6 +131,9 @@ services:
       - ./huggingface_cache:/root/.cache/huggingface
       - ./pytorch_cache:/root/.cache/pytorch
       - ./torch_cache:/root/.cache/torch
+      - ./job_offer_exporter/exporter/export_all_to_qdrant.py:/app/job_offer_exporter/exporter/export_all_to_qdrant.py
+      - ./job_search_qdrant/repositories_qdrant/get_client.py:/app/job_search_qdrant/repositories_qdrant/get_client.py
+      - ./job_search_qdrant/repositories_qdrant/job_offers_pracuj_repository.py:/app/job_search_qdrant/repositories_qdrant/job_offers_pracuj_repository.py
     environment:
       - FIND_A_JOB_USER=${FIND_A_JOB_USER}
       - FIND_A_JOB_PASSWORD=${FIND_A_JOB_PASSWORD}

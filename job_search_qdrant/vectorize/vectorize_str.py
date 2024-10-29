@@ -17,7 +17,7 @@ def get_model(model_name: str) -> any:
     return model
 
 if __name__ == '__main__':
-    model = get_model('sentence-transformers/paraphrase-distilroberta-base-v2')
+    model = get_model('sdadas/st-polish-paraphrase-from-distilroberta')
     session = get_db_session() # need env vars
     offer = session.query(Offer).filter(Offer.title == 'Opiekun Klienta Farmaceutycznego').one()
     repo = JobOffersPracujRepository()
